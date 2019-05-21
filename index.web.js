@@ -1,9 +1,9 @@
 import React from "react"
 import {render} from "react-dom"
-import Web from './src/web/app';
+import BootApp from './src/web/boot';
 
 render(
-    <Web/>, 
+    <BootApp/>, 
     document.getElementById("app")
 )
 

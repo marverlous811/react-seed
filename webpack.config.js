@@ -18,7 +18,11 @@ module.exports = {
             use: {
                 loader: "babel-loader",
                 options: {
-                    presets: ['@babel/preset-env', '@babel/preset-react', "@babel/typescript"],
+                    presets: ['@babel/preset-env', "@babel/typescript", '@babel/preset-react'],
+                    plugins: [
+                        ["@babel/plugin-proposal-decorators", { "legacy" : true}],
+                        ["@babel/plugin-proposal-class-properties", {"loose" : true}]
+                    ]
                 }
             },
         }
