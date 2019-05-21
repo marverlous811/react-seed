@@ -12,7 +12,8 @@ module.exports = {
         path: path.join(__dirname, "/dist")
     },
     module: {
-        rules:[{
+        rules:[
+        {
             test: /\.(tsx|jsx|js|ts)$/,
             exclude: /node_modules/,
             use: {
@@ -25,8 +26,11 @@ module.exports = {
                     ]
                 }
             },
-        }
-        ]
+        },
+        {
+            test: /\.css$/,
+            use: ["style-loader", "css-loader"]
+        }]
     },
     plugins: [
         new HtmlWebpackPlugin({
