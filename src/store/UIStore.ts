@@ -4,6 +4,7 @@ import { MODAL_TYPE } from '../native/component/modalComponent';
 interface ILoadingData{
     id: string,
     message: string,
+    timeout?: number,
 }
 
 class Modal{
@@ -41,6 +42,7 @@ export default class UIStore{
     @observable loading: boolean = false;
     @observable loadingContent : string = '';
     @observable loadingMap : Map<string, ILoadingData> = new Map();
+    loadingTimeout : any = {};
 
     //modal
     @observable isModalShowing : boolean = false;
@@ -56,18 +58,33 @@ export default class UIStore{
     }
     private constructor(){}
 
-    @action showLoading(id: string, message: string){
+    @action showLoading(id: string, message: string, timeout?: number, callback?: any){
         const loading : ILoadingData = {
             id, message
         }
         if(!this.loadingMap.has(id)){
             this.loadingMap.set(id, loading);
         }
+
+        if(timeout){
+            const timeoutId = setTimeout(() => {
+                this.hideLoading(id, callback);
+            }, timeout);
+
+            this.loadingTimeout[id] = timeoutId;
+        }
     }
 
-    @action hideLoading(id: string){
+    @action hideLoading(id: string, callback?: any){
         if(this.loadingMap.has(id)){
             this.loadingMap.delete(id);
+        }
+
+        clearTimeout(this.loadingTimeout[id]);
+        delete this.loadingTimeout[id];
+
+        if(callback){
+            callback();
         }
     }
 
@@ -102,5 +119,19 @@ export default class UIStore{
 
     @action hideModal(){
         this.isModalShowing = false;
+    }
+
+    @computed
+    get shouldShowLoading() {
+        return this.loadingMap.size > 0;
+    }
+
+    @computed
+    get currentLoadingMessage() {
+        const loadingMessages = Array.from(this.loadingMap.values());
+        if (loadingMessages.length > 0) {
+            return loadingMessages[loadingMessages.length - 1].message;
+        }
+        return '';
     }
 }

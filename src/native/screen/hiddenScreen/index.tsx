@@ -4,6 +4,8 @@ import UIStore from '../../../store/UIStore';
 import { ModalComponent } from '../../component/modalComponent';
 import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { StyleSheet } from 'react-native';
 
 interface IProps{
     uiStore?: UIStore
@@ -18,11 +20,26 @@ export default class HiddenScreen extends React.Component<IProps, any>{
             isVisible: toJS(this.props.uiStore!.isModalShowing),
             ...saveModalProps,
         }
-
+        const loadingProps = toJS(this.props.uiStore!.shouldShowLoading);
+        const loadingContent = toJS(this.props.uiStore!.currentLoadingMessage);
+        
         return(
             <View>
+                <Spinner 
+                    visible={loadingProps} 
+                    textContent={loadingContent}
+                    textStyle={styles.text} 
+                    color={'white'} 
+                    overlayColor={"rgba(0,0,0,0.5)"} 
+                />
                 <ModalComponent {...modalProps} />
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    text: {
+        color: 'white'
+    }
+})

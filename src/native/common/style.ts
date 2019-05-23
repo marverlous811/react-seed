@@ -1,6 +1,9 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
-const deviceHeight = Dimensions.get('window').height;
+const deviceHeight = Platform.OS === 'ios' ? 
+    Dimensions.get('window').height : 
+    require('react-native-extra-dimensions-android').get("REAL_WINDOW_HEIGHT");
+    
 const deviceWeight = Dimensions.get('window').width;
 
 const commonStyle = StyleSheet.create({
