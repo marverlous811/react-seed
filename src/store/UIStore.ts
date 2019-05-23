@@ -48,6 +48,9 @@ export default class UIStore{
     @observable isModalShowing : boolean = false;
     @observable modal : Modal = new Modal();
 
+    //toast
+    @observable toastMessage : string = '';
+
     public static instance : UIStore;
     public static getInstance(){
         if(!this.instance){
@@ -133,5 +136,10 @@ export default class UIStore{
             return loadingMessages[loadingMessages.length - 1].message;
         }
         return '';
+    }
+
+    @action
+    showToast(message: string) {
+        this.toastMessage = message;
     }
 }

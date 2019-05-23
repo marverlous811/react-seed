@@ -6,6 +6,7 @@ import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { StyleSheet } from 'react-native';
+import ToastComponent from '../../component/toastComponent';
 
 interface IProps{
     uiStore?: UIStore
@@ -33,6 +34,7 @@ export default class HiddenScreen extends React.Component<IProps, any>{
                     overlayColor={"rgba(0,0,0,0.5)"} 
                 />
                 <ModalComponent {...modalProps} />
+                <ToastComponent uiStore={this.props.uiStore}/>
             </View>
         )
     }
